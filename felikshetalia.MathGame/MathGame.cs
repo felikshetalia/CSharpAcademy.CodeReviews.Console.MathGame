@@ -1,9 +1,12 @@
 using System;
-
+using System.Linq;
 namespace MathGame
 {
     internal class MathGame
     {
+        // game history is a whole formatted string
+        protected List<string> gameHistory;
+        public MathGame() => gameHistory = new();
 
         public void NewGame(string readLine)
         {
@@ -19,15 +22,21 @@ namespace MathGame
 
             var rnd = new Random();
 
+            string writtenMessage = null;
+
             // in the game loop you should get an operator at a random index
 
             // get at least 5 questions
 
             // start with 5 questions and 2 params only
 
+            gameHistory.Add($"Game {DateTime.Now}");
             for (int i = 0; i < minQuestions; i++)
             {
-                System.Console.WriteLine($"{i + 1}.");
+                writtenMessage = $"{i + 1}.";
+                System.Console.WriteLine(writtenMessage);
+                gameHistory[gameHistory.Count - 1] += $"\n{writtenMessage}";
+
                 int first = rnd.Next(1, maxNumber);
                 int second = rnd.Next(1, maxNumber);
                 var op = operations[rnd.Next(operations.Length)];
@@ -61,27 +70,55 @@ namespace MathGame
                 }
 
                 // now user's turn
-                Console.Write($"{first} {op} {second} = ");
+                writtenMessage = $"{first} {op} {second} = ";
+                System.Console.Write(writtenMessage);
+                gameHistory[gameHistory.Count - 1] += $"\n{writtenMessage}";
                 readLine = Console.ReadLine();
                 int userAnswer;
                 if (readLine != null)
                 {
+                    gameHistory[gameHistory.Count - 1] += $"\n{readLine}";
+
                     if (int.TryParse(readLine, out userAnswer))
                     {
                         if (userAnswer == correctAnswer)
                         {
                             score++;
-                            System.Console.WriteLine("Correct.");
+                            writtenMessage = "Correct.";
                         }
                         else
-                        {
-                            Console.WriteLine("Nope");
-                        }
+                            writtenMessage = "Nope";
+
+                        System.Console.WriteLine(writtenMessage);
+                        gameHistory[gameHistory.Count - 1] += $"\n{writtenMessage}";
                     }
                     else
                     {
-                        System.Console.WriteLine("The answer should be a number don't you think?");
+                        writtenMessage = "The answer should be a number don't you think?";
+                        System.Console.WriteLine(writtenMessage);
+                        gameHistory[gameHistory.Count - 1] += $"\n{writtenMessage}";
                     }
+                }
+            }
+        }
+
+        public void DisplayHistory(string readLine)
+        {
+            Console.WriteLine("Choose a game you want to display by the number in the list\n");
+            for (int i = 1; i <= gameHistory.Count; i++)
+            {
+                Console.WriteLine($"{i}. {gameHistory[i - 1].Substring(0, DateTime.Now.ToString().Length)}");
+
+            }
+            Console.WriteLine();
+            readLine = Console.ReadLine();
+            int indexOfGame;
+            if (readLine != null)
+            {
+
+                if (int.TryParse(readLine, out indexOfGame))
+                {
+                    Console.WriteLine(gameHistory[indexOfGame - 1]);
                 }
             }
         }
@@ -92,7 +129,6 @@ namespace MathGame
 
             while (true)
             {
-                // Console.Clear(); // exception
                 Console.WriteLine("Welcome to Math game!\nSelect an option to load the history of games or start a new game.\n");
                 System.Console.WriteLine("1. New game\n2. History");
                 System.Console.WriteLine("\nType \"Bye\" to exit the game");
@@ -109,7 +145,7 @@ namespace MathGame
                             NewGame(lineRead);
                             break;
                         case "2":
-                            Console.WriteLine("This is the history of all games");
+                            DisplayHistory(lineRead);
                             break;
                         default:
                             continue;
