@@ -15,7 +15,7 @@ namespace MathGame
             int minQuestions = 5;
             // stopping condition: you answer wrong 3 times and game ends
             int wrongAnswers = 0;
-            int maxNumber = 11;
+            int maxNumber = 101;
 
             char[] operations = { '+', '-', '*', '/' };
 
@@ -38,8 +38,8 @@ namespace MathGame
                 System.Console.WriteLine(writtenMessage);
                 gameHistory[gameHistory.Count - 1] += $"\n{writtenMessage}";
 
-                int first = rnd.Next(1, maxNumber);
-                int second = rnd.Next(1, maxNumber);
+                int first = rnd.Next(0, maxNumber);
+                int second = rnd.Next(0, maxNumber);
                 var op = operations[rnd.Next(operations.Length)];
 
                 int correctAnswer;
@@ -57,7 +57,8 @@ namespace MathGame
                         break;
                     case '/':
                         // first < second - always a fraction
-                        if (first < second)
+                        if (second == 0) second = rnd.Next(1, maxNumber);
+                        if (first < second && first > 0)
                             first = rnd.Next(second, maxNumber);
                         while (first % second != 0)
                         {
