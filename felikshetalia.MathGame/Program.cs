@@ -6,8 +6,8 @@ namespace MathGame
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Type this...");
-            Console.ReadLine();
+            MathGame game = new();
+            game.StartGame();
         }
     }
 }
