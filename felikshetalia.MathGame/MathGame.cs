@@ -13,6 +13,7 @@ namespace MathGame
             // 2 params = 1 point
             // 3 params = 2 pts
             // 4 params = 3 pts
+            int maxNumber = 11;
 
             char[] operations = { '+', '-', '*', '/' };
 
@@ -27,8 +28,8 @@ namespace MathGame
             for (int i = 0; i < minQuestions; i++)
             {
                 System.Console.WriteLine($"{i + 1}.");
-                int first = rnd.Next(1, 11);
-                int second = rnd.Next(1, 11);
+                int first = rnd.Next(1, maxNumber);
+                int second = rnd.Next(1, maxNumber);
                 var op = operations[rnd.Next(operations.Length)];
 
                 int correctAnswer;
@@ -45,8 +46,14 @@ namespace MathGame
                         correctAnswer = first * second;
                         break;
                     case '/':
+                        // first < second - always a fraction
+                        if (first < second)
+                            first = rnd.Next(second, maxNumber);
+                        while (first % second != 0)
+                        {
+                            second = rnd.Next(1, first + 1);
+                        }
                         correctAnswer = first / second;
-                        // needs further modification
                         break;
                     default:
                         correctAnswer = 0;
