@@ -13,9 +13,8 @@ namespace MathGame
             // WARNING: this game operates only with integers
             int score = 0;
             int minQuestions = 5;
-            // 2 params = 1 point
-            // 3 params = 2 pts
-            // 4 params = 3 pts
+            // stopping condition: you answer wrong 3 times and game ends
+            int wrongAnswers = 0;
             int maxNumber = 11;
 
             char[] operations = { '+', '-', '*', '/' };
@@ -28,12 +27,14 @@ namespace MathGame
 
             // get at least 5 questions
 
-            // start with 5 questions and 2 params only
+            // apply the stopping condition
+            // if you have 3 wrong answers before you've answered 5 questions, the game ends after the 5th question
 
             gameHistory.Add($"Game {DateTime.Now}");
-            for (int i = 0; i < minQuestions; i++)
+            int i = 1;
+            while (i <= minQuestions || wrongAnswers < 3)
             {
-                writtenMessage = $"{i + 1}.";
+                writtenMessage = $"{i}.";
                 System.Console.WriteLine(writtenMessage);
                 gameHistory[gameHistory.Count - 1] += $"\n{writtenMessage}";
 
@@ -73,8 +74,10 @@ namespace MathGame
                 writtenMessage = $"{first} {op} {second} = ";
                 System.Console.Write(writtenMessage);
                 gameHistory[gameHistory.Count - 1] += $"\n{writtenMessage}";
+
                 readLine = Console.ReadLine();
                 int userAnswer;
+
                 if (readLine != null)
                 {
                     gameHistory[gameHistory.Count - 1] += $"\n{readLine}";
@@ -87,19 +90,24 @@ namespace MathGame
                             writtenMessage = "Correct.";
                         }
                         else
+                        {
+                            wrongAnswers++;
                             writtenMessage = "Nope";
+                        }
 
-                        System.Console.WriteLine(writtenMessage);
-                        gameHistory[gameHistory.Count - 1] += $"\n{writtenMessage}";
                     }
                     else
                     {
                         writtenMessage = "The answer should be a number don't you think?";
-                        System.Console.WriteLine(writtenMessage);
-                        gameHistory[gameHistory.Count - 1] += $"\n{writtenMessage}";
                     }
+                    System.Console.WriteLine(writtenMessage);
+                    gameHistory[gameHistory.Count - 1] += $"\n{writtenMessage}";
+                    i++;
                 }
             }
+            writtenMessage = $"Game over. You have scored {score} points\n\n";
+            System.Console.WriteLine(writtenMessage);
+            gameHistory[gameHistory.Count - 1] += $"\n{writtenMessage}";
         }
 
         public void DisplayHistory(string readLine)
