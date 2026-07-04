@@ -8,31 +8,53 @@ namespace MathGame
         protected List<string> gameHistory;
         public MathGame() => gameHistory = new();
 
+        // New game comes with 5 different options:
+        // +, -, *, /, and randomized
+
         public void NewGame(string readLine)
         {
             // WARNING: this game operates only with integers
             int score = 0;
             int minQuestions = 5;
-            // stopping condition: you answer wrong 3 times and game ends
-            int wrongAnswers = 0;
             int maxNumber = 101;
 
             char[] operations = { '+', '-', '*', '/' };
-
             var rnd = new Random();
+            char op = operations[rnd.Next(operations.Length)];
 
             string writtenMessage = null;
 
-            // in the game loop you should get an operator at a random index
+            // user selects a game mode
+            System.Console.WriteLine("1. Get a random game\n2. Adding game\n3. Subtracting game\n4. Multiplication game\n5. Division game\n");
 
-            // get at least 5 questions
-
-            // apply the stopping condition
-            // if you have 3 wrong answers before you've answered 5 questions, the game ends after the 5th question
+            readLine = Console.ReadLine(); // read game mode
+            if (readLine != null)
+            {
+                switch (readLine)
+                {
+                    case "1":
+                        op = operations[rnd.Next(operations.Length)];
+                        break;
+                    case "2":
+                        op = '+';
+                        break;
+                    case "3":
+                        op = '-';
+                        break;
+                    case "4":
+                        op = '*';
+                        break;
+                    case "5":
+                        op = '/';
+                        break;
+                    default:
+                        break;
+                }
+            }
 
             gameHistory.Add($"Game {DateTime.Now}");
             int i = 1;
-            while (i <= minQuestions || wrongAnswers < 3)
+            while (i <= minQuestions)
             {
                 writtenMessage = $"{i}.";
                 System.Console.WriteLine(writtenMessage);
@@ -40,7 +62,6 @@ namespace MathGame
 
                 int first = rnd.Next(0, maxNumber);
                 int second = rnd.Next(0, maxNumber);
-                var op = operations[rnd.Next(operations.Length)];
 
                 int correctAnswer;
 
@@ -92,7 +113,6 @@ namespace MathGame
                         }
                         else
                         {
-                            wrongAnswers++;
                             writtenMessage = "Nope";
                         }
 
@@ -140,6 +160,7 @@ namespace MathGame
             {
                 Console.WriteLine("Welcome to Math game!\nSelect an option to load the history of games or start a new game.\n");
                 System.Console.WriteLine("1. New game\n2. History");
+                // System.Console.WriteLine("1. Get a random game\n2. Adding game\n3. Subtracting game\n4. Multiplication game\n5. Division game\n6. History");
                 System.Console.WriteLine("\nType \"Bye\" to exit the game");
 
                 lineRead = Console.ReadLine();
