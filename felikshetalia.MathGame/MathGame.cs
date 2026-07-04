@@ -160,7 +160,6 @@ namespace MathGame
             {
                 Console.WriteLine("Welcome to Math game!\nSelect an option to load the history of games or start a new game.\n");
                 System.Console.WriteLine("1. New game\n2. History");
-                // System.Console.WriteLine("1. Get a random game\n2. Adding game\n3. Subtracting game\n4. Multiplication game\n5. Division game\n6. History");
                 System.Console.WriteLine("\nType \"Bye\" to exit the game");
 
                 lineRead = Console.ReadLine();
